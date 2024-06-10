@@ -22,6 +22,23 @@ async function registerDriver(req, res) {
 	}
 }
 
+async function login(req, res) {
+	try {
+		const tokens = await driverService.login({
+			email: req.body.email,
+			password: req.body.password,
+		});
+		SuccessResponse.messages = "Login SuccessFul";
+		SuccessResponse.data = tokens.accessToken;
+		res.cookie("x-refresh-token", tokens.refreshToken, { httpOnly: true });
+		return res.status(StatusCodes.OK).json(SuccessResponse);
+	} catch (error) {
+		ErrorResponse.error = error;
+		return res.status(error.statusCode).json(ErrorResponse);
+	}
+}
+
 module.exports = {
 	registerDriver,
+	login,
 };

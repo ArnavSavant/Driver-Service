@@ -10,4 +10,10 @@ router.post(
 	driverController.registerDriver
 );
 
+router.get(
+	"/login",
+	driverMiddleware.validateLoginRequest,
+	driverController.login
+);
+
 module.exports = router;
