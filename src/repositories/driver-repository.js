@@ -15,7 +15,27 @@ class DriverRepository extends CrudRepository {
 				},
 			});
 			return driver;
-		} catch (error) {}
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async addCar(carInfoId, driverId) {
+		try {
+			const driver = await Driver.update(
+				{
+					carInfoId: carInfoId,
+				},
+				{
+					where: {
+						id: driverId,
+					},
+				}
+			);
+			return driver;
+		} catch (error) {
+			throw error;
+		}
 	}
 }
 

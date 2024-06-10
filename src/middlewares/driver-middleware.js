@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-
+const AppError = require("../utils/errors/app-error");
 async function validateRegistration(req, res, next) {
 	let errors = [];
 

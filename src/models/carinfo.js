@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
+			number: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
 			isInsured: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,

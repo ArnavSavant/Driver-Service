@@ -4,12 +4,19 @@ const carRepository = new CarInfoRepository();
 const driverRepository = new DriverRepository();
 const AppError = require("../utils/errors/app-error");
 
-
 async function addCarDetails(data) {
 	try {
-		const car = await carRepository.create(data);
-        // const 
-		return car;
+		const carData = {
+			name: data.name,
+			number: data.number,
+			isInsured: data.isInsured,
+			model: data.model,
+			selfOwned: data.selfOwned,
+		};
+		const driverId = data.driverId;
+		const car = await carRepository.create(carData);
+		const driver = await driverRepository.addCar(car.id, driverId);
+		return { driver, car };
 	} catch (error) {
 		let explanation = [];
 		if (
@@ -21,10 +28,8 @@ async function addCarDetails(data) {
 			});
 			throw new AppError(explanation.join(", "), StatusCodes.BAD_REQUEST);
 		}
-		throw new AppError(
-			"Cannot create a user",
-			StatusCodes.INTERNAL_SERVER_ERROR
-		);
+		console.log(error);
+		throw new AppError("Cannot add the car", StatusCodes.INTERNAL_SERVER_ERROR);
 	}
 }
 
