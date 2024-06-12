@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { driverMiddleware, authMiddleware } = require("../../middlewares");
-const { driverController, carController } = require("../../controllers");
+const { driverController } = require("../../controllers");
+const carRoutes = require("./car-routes");
 
 // api/v1/driver/register --> POST
 router.post(
@@ -16,10 +17,6 @@ router.get(
 	driverController.login
 );
 
-router.post(
-	"/car/add",
-	authMiddleware.isAuthenticated,
-	carController.addCarDetails
-);
+router.use("/car", carRoutes);
 
 module.exports = router;

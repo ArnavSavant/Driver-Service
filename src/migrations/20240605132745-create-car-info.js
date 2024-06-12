@@ -16,6 +16,7 @@ module.exports = {
 			number: {
 				type: Sequelize.STRING,
 				allowNull: false,
+				unique: true,
 			},
 			isInsured: {
 				type: Sequelize.BOOLEAN,
@@ -34,6 +35,16 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				allowNull: false,
 				defaultValue: true,
+			},
+			driverId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: "Drivers",
+					key: "id",
+				},
+				onDelete: "cascade",
+				onUpdate: "cascade",
 			},
 			createdAt: {
 				allowNull: false,

@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			this.hasOne(models.CarInfo, {
-				foreignKey: "carInfoId",
-				onDelete: "cascade",
+				foreignKey: "driverId",
+				onDelete: "CASCADE",
 			});
 		}
 	}
@@ -48,16 +48,6 @@ module.exports = (sequelize, DataTypes) => {
 				values: [UBER_GO, PREMIUM, LUXURY],
 				defaultValue: UBER_GO,
 				allowNull: false,
-			},
-			carInfoId: {
-				type: DataTypes.INTEGER,
-				allowNull: true,
-				references: {
-					model: "CarInfo",
-					key: "id",
-				},
-				onUpdate: "cascade",
-				onDelete: "cascade",
 			},
 		},
 		{

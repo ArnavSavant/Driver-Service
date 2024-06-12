@@ -6,17 +6,8 @@ const AppError = require("../utils/errors/app-error");
 
 async function addCarDetails(data) {
 	try {
-		const carData = {
-			name: data.name,
-			number: data.number,
-			isInsured: data.isInsured,
-			model: data.model,
-			selfOwned: data.selfOwned,
-		};
-		const driverId = data.driverId;
-		const car = await carRepository.create(carData);
-		const driver = await driverRepository.addCar(car.id, driverId);
-		return { driver, car };
+		const car = await carRepository.create(data);
+		return car;
 	} catch (error) {
 		let explanation = [];
 		if (
@@ -33,6 +24,32 @@ async function addCarDetails(data) {
 	}
 }
 
+async function modifyCarDetails(data) {
+	try {
+		let car = await carRepository.getCarByDriverId(data.driverId);
+		await carRepository.update(data, car.id);
+		car = await carRepository.getCarByDriverId(data.driverId);
+		return car;
+	} catch (error) {
+		let explanation = [];
+		if (
+			error.name == "SequelizeValidationError" ||
+			error.name == "SequelizeUniqueConstraintError"
+		) {
+			error.errors.forEach((err) => {
+				explanation.push(err.message);
+			});
+			throw new AppError(explanation.join(", "), StatusCodes.BAD_REQUEST);
+		}
+		console.log(error);
+		throw new AppError(
+			"Cannot Modify the car",
+			StatusCodes.INTERNAL_SERVER_ERROR
+		);
+	}
+}
+
 module.exports = {
 	addCarDetails,
+	modifyCarDetails,
 };

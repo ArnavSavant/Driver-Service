@@ -44,8 +44,11 @@ async function verifyAccessToken(token) {
 
 async function verifyRefreshToken(token) {
 	try {
-		return jwt.verify(token, serverConfig.REFRESH_TOKEN_SECRET);
+		return jwt.verify(token, serverConfig.REFRESH_TOKEN_SECRET, {
+			ignoreExpiration: true,
+		});
 	} catch (error) {
+		console.log(error);
 		throw error;
 	}
 }
@@ -61,6 +64,7 @@ async function isExpired(decode) {
 		throw error;
 	}
 }
+
 module.exports = {
 	checkPassword,
 	createAccessToken,

@@ -40,16 +40,6 @@ module.exports = {
 				defaultValue: UBER_GO,
 				allowNull: false,
 			},
-			carInfoId: {
-				type: Sequelize.INTEGER,
-				allowNull: true,
-				references: {
-					model: "CarInfos",
-					key: "id",
-				},
-				onDelete: "cascade",
-				onUpdate: "cascade",
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE,

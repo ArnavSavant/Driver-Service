@@ -13,15 +13,12 @@ async function checkAuthentication(accessToken) {
 		if (!decode) {
 			throw new AppError(
 				"Access Token Verification Failed",
-				StatusCodes.BAD_REQUEST
+				StatusCodes.UNAUTHORIZED
 			);
 		}
 		const expiration = await Auth.isExpired(decode);
 		if (expiration) {
-			throw new AppError(
-				"Access Token is Expired",
-				StatusCodes.GATEWAY_TIMEOUT
-			);
+			return false;
 		}
 		const driver = await driverRepository.get(decode.id);
 		return { id: driver.id, name: driver.name };
@@ -36,6 +33,38 @@ async function checkAuthentication(accessToken) {
 	}
 }
 
+async function reAuthenticate(refreshToken) {
+	try {
+		const decode = await Auth.verifyRefreshToken(refreshToken);
+		if (!decode) {
+			throw new AppError(
+				"Refresh Token Verification Failed",
+				StatusCodes.UNAUTHORIZED
+			);
+		}
+		const expiration = await Auth.isExpired(decode);
+		if (expiration) {
+			throw new AppError(
+				"Login Session Expired. Login Again",
+				StatusCodes.UNAUTHORIZED
+			);
+		}
+		const accessToken = await Auth.createAccessToken({
+			id: decode.id,
+			name: decode.name,
+		});
+		return accessToken;
+	} catch (error) {
+		if (error instanceof AppError) {
+			throw error;
+		}
+		throw new AppError(
+			"Something went wrong while authentication",
+			StatusCodes.INTERNAL_SERVER_ERROR
+		);
+	}
+}
 module.exports = {
 	checkAuthentication,
+	reAuthenticate,
 };

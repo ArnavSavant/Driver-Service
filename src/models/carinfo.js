@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			this.belongsTo(models.Driver, {
-				foreignKey: "carInfoId",
-				onDelete: "cascade",
+				foreignKey: "driverId",
+				as: "Driver",
+				allowNull: false,
 			});
 		}
 	}
@@ -23,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 			number: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true,
 			},
 			isInsured: {
 				type: DataTypes.BOOLEAN,
@@ -41,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
 				defaultValue: true,
+			},
+			driverId: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				unique: true,
 			},
 		},
 		{
