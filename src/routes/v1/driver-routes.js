@@ -17,6 +17,12 @@ router.get(
 	driverController.login
 );
 
+router.patch(
+	"/toggle",
+	authMiddleware.isAuthenticated,
+	driverController.toggleAvailabilty
+);
+
 router.use("/car", carRoutes);
 
 module.exports = router;

@@ -9,7 +9,7 @@ router.post(
 	carController.addCarDetails
 );
 
-router.post(
+router.put(
 	"/modify",
 	authMiddleware.isAuthenticated,
 	carController.modifyCarDetails

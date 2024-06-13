@@ -38,7 +38,20 @@ async function login(req, res) {
 	}
 }
 
+async function toggleAvailabilty(req, res) {
+	try {
+		const driver = await driverService.toggleAvailabilty(req.driver.id);
+		SuccessResponse.messages = "Driver's Availability Toggled SuccessFully";
+		SuccessResponse.data = driver;
+		return res.status(StatusCodes.CREATED).json(SuccessResponse);
+	} catch (error) {
+		ErrorResponse.error = error;
+		return res.status(error.statusCode).json(ErrorResponse);
+	}
+}
+
 module.exports = {
 	registerDriver,
 	login,
+	toggleAvailabilty,
 };

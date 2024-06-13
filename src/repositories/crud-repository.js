@@ -26,14 +26,13 @@ class CrudRepository {
 
 	async update(data, id) {
 		// data -> {col:value, .....}
-
 		const response = await this.model.update(data, {
 			where: {
 				id: id,
 			},
 		});
 		if (response[0] == 0) {
-			throw new AppError("Unable to delete the data", StatusCodes.NOT_FOUND);
+			throw new AppError("Unable to update the data", StatusCodes.NOT_FOUND);
 		}
 		return response;
 	}

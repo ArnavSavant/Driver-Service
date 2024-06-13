@@ -60,7 +60,23 @@ async function login(data) {
 		);
 	}
 }
+
+async function toggleAvailabilty(driverId) {
+	try {
+		let driver = await driverRepository.get(driverId);
+		driver.dataValues.isAvailable = !driver.dataValues.isAvailable;
+		driver = await driverRepository.update(driver.dataValues, driverId);
+		return driver;
+	} catch (error) {
+		console.log(error);
+		throw new AppError(
+			"Something Went Wrong",
+			StatusCodes.INTERNAL_SERVER_ERROR
+		);
+	}
+}
 module.exports = {
 	registerDriver,
 	login,
+	toggleAvailabilty,
 };
